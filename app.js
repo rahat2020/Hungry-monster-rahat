@@ -12,15 +12,15 @@ recipeCloseBtn.addEventListener('click', () => {
 
 
 // get meal list//////////////
-function displayMealList(){
+function displayMealList() {
     let searchInput = document.getElementById('search-input').value.trim();
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`)
-    .then(response => response.json())
-    .then(data => {
-        let mealHtml = "";
-        if(data.meals){
-            data.meals.forEach(meal => {
-                mealHtml += `
+        .then(response => response.json())
+        .then(data => {
+            let mealHtml = "";
+            if (data.meals) {
+                data.meals.forEach(meal => {
+                    mealHtml += `
                     <div class = "meal-item" data-id = "${meal.idMeal}">
                         <div class = "meal-img">
                             <img src = "${meal.strMealThumb}" alt = "food">
@@ -31,31 +31,31 @@ function displayMealList(){
                         </div>
                     </div>
                 `;
-            });
-            mealList.classList.remove('notFound');
-        } else{
-            mealHtml = "Sorry, it doesn't match!";
-            mealList.classList.add('notFound');
-        }
+                });
+                mealList.classList.remove('notFound');
+            } else {
+                mealHtml = "Sorry, it doesn't match!";
+                mealList.classList.add('notFound');
+            }
 
-        mealList.innerHTML = mealHtml;
-    });
+            mealList.innerHTML = mealHtml;
+        });
 }
 
 
 // get recipe of the meal
-function getMealRecipe(e){
-    e.preventDefault();
-    if(e.target.classList.contains('recipe-btn')){
-        let mealItem = e.target.parentElement.parentElement;
+function getMealRecipe(food) {
+    food.preventDefault();
+    if (food.target.classList.contains('recipe-btn')) {
+        let mealItem = food.target.parentElement.parentElement;
         fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`)
-        .then(response => response.json())
-        .then(data => displayMealRecipe(data.meals));
+            .then(response => response.json())
+            .then(data => displayMealRecipe(data.meals));
     }
 }
 
 ///display meal recipe//////
-function displayMealRecipe(meal){
+function displayMealRecipe(meal) {
     console.log(meal);
     meal = meal[0];
     let html = `
